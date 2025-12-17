@@ -88,38 +88,21 @@
       zoomControl: true
     });
 
-   
     const imageWidth = 5614;
     const imageHeight = 7122;
-
     const imageBounds = [[0, 0], [imageHeight, imageWidth]];
 
-    // PLACE YOUR MAP IMAGE IN THE SAME FOLDER AND NAME IT HERE
-    const image = L.imageOverlay('https://raw.githubusercontent.com/c0nt0-MG/map-assets/main/map.png
-', imageBounds).addTo(map);
+    // Use GitHub Pages URL for your image
+    const imageURL = 'https://c0nt0-MG.github.io/map-assets/20251217_182410768_iOS.png';
+    const image = L.imageOverlay(imageURL, imageBounds).addTo(map);
 
     map.fitBounds(imageBounds);
 
     // --- CITY / TOWN DATA ---
     const locations = [
-      {
-        name: 'Redwood',
-        coords: [3500, 1500],
-        description: 'test',
-        extra: 'test'
-      },
-      {
-        name: 'York',
-        coords: [4550, 1000],
-        description: 'test.',
-        extra: 'test'
-      },
-      {
-        name: 'Hull',
-        coords: [3900, 3300],
-        description: 'test',
-        extra: 'test'
-      }
+      { name: 'Redwood', coords: [3500, 1500], description: 'test', extra: 'test' },
+      { name: 'York', coords: [4550, 1000], description: 'test.', extra: 'test' },
+      { name: 'Hull', coords: [3900, 3300], description: 'test', extra: 'test' }
     ];
 
     // --- INFO PANEL UPDATE ---
@@ -142,10 +125,7 @@
       }).addTo(map);
 
       marker.on('click', () => {
-        map.flyTo(loc.coords, 1.2, {
-          duration: 1.2
-        });
-
+        map.flyTo(loc.coords, 1.2, { duration: 1.2 });
         updateInfoPanel(loc);
       });
     });
