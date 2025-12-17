@@ -88,11 +88,11 @@
       zoomControl: true
     });
 
-    const imageWidth = 5614;
-    const imageHeight = 7122;
+    const imageWidth = 5614;  // adjust if needed
+    const imageHeight = 7122; // adjust if needed
     const imageBounds = [[0, 0], [imageHeight, imageWidth]];
 
-    // Use GitHub Pages URL for your image
+    // Use your Imageshack direct link
     const imageURL = 'https://imagizer.imageshack.com/img923/4131/ufv3V4.png';
     const image = L.imageOverlay(imageURL, imageBounds).addTo(map);
 
