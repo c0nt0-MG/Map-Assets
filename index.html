@@ -134,16 +134,22 @@
       `;
     }
 
-    locations.forEach(loc => {
-      L.circleMarker(loc.coords, {
-        radius: 7,
-        color: '#ffffff',
-        fillColor: '#5F1B1B',
-        fillOpacity: 0.9
-      })
-      .addTo(map)
-      .on('click', () => updateInfoPanel(loc));
-    });
+locations.forEach(loc => {
+  L.circleMarker(loc.coords, {
+    radius: 7,
+    color: '#ffffff',
+    fillColor: '#5F1B1B',
+    fillOpacity: 0.9
+  })
+  .addTo(map)
+  .bindTooltip(loc.name, {
+    permanent: true,
+    direction: 'bottom',
+    offset: [0, 8],
+    className: 'marker-label'
+  })
+  .on('click', () => updateInfoPanel(loc));
+});
   </script>
 </body>
 </html>
