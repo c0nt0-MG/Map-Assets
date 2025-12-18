@@ -27,6 +27,40 @@
       opacity: 1;
       text-decoration: underline;
     }
+
+    /* Layout */
+    .content {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+    }
+
+    .text {
+      flex: 1;
+    }
+
+    .image {
+      flex: 0 0 280px;
+    }
+
+    .image img {
+      width: 100%;
+      height: auto;
+      display: block;
+      pointer-events: none; /* prevents zoom / interaction */
+      user-select: none;
+    }
+
+    /* Mobile fallback */
+    @media (max-width: 700px) {
+      .content {
+        flex-direction: column;
+      }
+
+      .image {
+        max-width: 100%;
+      }
+    }
   </style>
 </head>
 
@@ -36,15 +70,23 @@
     ← Back to Redwoodshire Map
   </a>
 
-  <h1>Oaklands</h1>
+  <div class="content">
+    <div class="text">
+      <h1>Oaklands</h1>
 
-  <p>
-    Placeholder.
-  </p>
+      <p>
+        PLACEHOLDER.
+      </p>
 
-  <p>
-    Placeholder.
-  </p>
+      <p>
+        PLACEHOLDER.
+      </p>
+    </div>
+
+    <div class="image">
+      <img src="oaklands.jpg" alt="Oaklands">
+    </div>
+  </div>
 
 </body>
 </html>
