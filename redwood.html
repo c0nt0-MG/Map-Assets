@@ -27,6 +27,40 @@
       opacity: 1;
       text-decoration: underline;
     }
+
+    /* Layout */
+    .content {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+    }
+
+    .text {
+      flex: 1;
+    }
+
+    .image {
+      flex: 0 0 280px;
+    }
+
+    .image img {
+      width: 100%;
+      height: auto;
+      display: block;
+      pointer-events: none; /* prevents zoom / interaction */
+      user-select: none;
+    }
+
+    /* Mobile fallback */
+    @media (max-width: 700px) {
+      .content {
+        flex-direction: column;
+      }
+
+      .image {
+        max-width: 100%;
+      }
+    }
   </style>
 </head>
 
@@ -36,19 +70,27 @@
     ← Back to Redwoodshire Map
   </a>
 
-  <h1>Redwood</h1>
+  <div class="content">
+    <div class="text">
+      <h1>Redwood</h1>
 
-  <p>
-    Redwood is the political, cultural, and economic centre of Redwoodshire.
-    Its identity is shaped by layered history, entrenched power structures,
-    and tightly packed districts.
-  </p>
+      <p>
+        Redwood is the political, cultural, and economic centre of Redwoodshire.
+        Its identity is shaped by layered history, entrenched power structures,
+        and tightly packed districts.
+      </p>
 
-  <p>
-    Exgate represents the city’s working heart, while the Old City preserves
-    medieval and Tudor architecture. Sepergord remains the stronghold of
-    financial influence and inherited power.
-  </p>
+      <p>
+        Exgate represents the city’s working heart, while the Old City preserves
+        medieval and Tudor architecture. Sepergord remains the stronghold of
+        financial influence and inherited power.
+      </p>
+    </div>
+
+    <div class="image">
+      <img src="redwood.jpg" alt="Redwood cityscape">
+    </div>
+  </div>
 
 </body>
 </html>
