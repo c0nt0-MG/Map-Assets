@@ -6,11 +6,7 @@
   <link rel="icon" href="https://imagizer.imageshack.com/img924/6295/qz1cj5.jpg" type="image/png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- Leaflet CSS -->
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet/dist/leaflet.css"
-  />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 
   <style>
     html, body {
@@ -25,48 +21,38 @@
     #container {
       display: flex;
       height: 100%;
-      width: 100%;
     }
 
     #map {
       flex: 3;
-      background: #000000;
     }
 
     #info-panel {
       flex: 1;
       padding: 20px;
-      background: #5F1B1B;
-      border-left: 2px solid #5F1B1B;
       overflow-y: auto;
-    }
-
-    #info-panel h2 {
-      margin-top: 0;
-      font-size: 1.6rem;
-    }
-
-    #info-panel p {
-      line-height: 1.5;
-      opacity: 0.95;
-    }
-
-    .hint {
-      opacity: 0.6;
-      font-style: italic;
-      margin-top: 40px;
-    }
-
-    .leaflet-popup-content-wrapper {
       background: #5F1B1B;
+    }
+
+    ul {
+      padding-left: 20px;
+    }
+
+    .more-info-btn {
+      display: inline-block;
+      margin-top: 16px;
+      padding: 8px 14px;
+      background: #7a2525;
       color: #e6f1f5;
+      text-decoration: none;
+      border-radius: 4px;
+      border: 1px solid rgba(230, 241, 245, 0.3);
     }
 
-    .leaflet-popup-tip {
-      background: #5F1B1B;
+    .more-info-btn:hover {
+      background: #9a3a3a;
     }
 
-    /* Back to Redwood link */
     .back-link {
       position: fixed;
       top: 12px;
@@ -76,22 +62,14 @@
       background: #5F1B1B;
       color: #e6f1f5;
       text-decoration: none;
-      font-size: 0.95rem;
-      border: 1px solid rgba(230, 241, 245, 0.3);
       border-radius: 4px;
-      transition: background 0.2s, opacity 0.2s;
-    }
-
-    .back-link:hover {
-      background: #7a2525;
-      opacity: 0.95;
+      border: 1px solid rgba(230, 241, 245, 0.3);
     }
   </style>
 </head>
 
 <body>
-  <a href="https://conto-shop.fourthwall.com/en-gbp/pages/redwood"
-     class="back-link">
+  <a href="https://conto-shop.fourthwall.com/en-gbp/pages/redwood" class="back-link">
     ← Back to Redwood
   </a>
 
@@ -99,60 +77,63 @@
     <div id="map"></div>
     <div id="info-panel">
       <h2>Map Information</h2>
-      <p>Select a city or town on the map to view details.</p>
-      <p class="hint">This panel can contain lore, history, characters, or political influence.</p>
+      <p>Select a location to view key details.</p>
     </div>
   </div>
 
-  <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
   <script>
     const map = L.map('map', {
       crs: L.CRS.Simple,
       minZoom: -2,
-      maxZoom: 2,
-      zoomControl: true
+      maxZoom: 2
     });
 
-    const imageWidth = 5614;
-    const imageHeight = 7122;
-    const imageBounds = [[0, 0], [imageHeight, imageWidth]];
-
-    const imageURL = 'https://imagizer.imageshack.com/img923/4131/ufv3V4.png';
-    L.imageOverlay(imageURL, imageBounds).addTo(map);
+    const imageBounds = [[0, 0], [7122, 5614]];
+    L.imageOverlay(
+      'https://imagizer.imageshack.com/img923/4131/ufv3V4.png',
+      imageBounds
+    ).addTo(map);
 
     map.fitBounds(imageBounds);
 
     const locations = [
-      { name: 'Redwood', coords: [3500, 1500], description: 'Centeral City in Redwoodshire', extra: 'THE DISTRICTS OF REDWOOD' },
-      { name: 'York', coords: [4550, 1000], description: 'Historic City in Redwoodshire.', extra: 'THE DISTRICTS OF YORK' },
-      { name: 'Oaklands', coords: [4750, 2560], description: 'Sizable Town in Redwoodshire.', extra: 'THE DISTRICTS OF OAKLANDS' },
-      { name: 'Hull', coords: [3900, 3300], description: 'Large Industrial Port City in Redwoodshire', extra: 'THE DISTRICTS OF HULL' },
-      { name: 'Grimsby', coords: [3000, 4100], description: 'Former Fishing Town in Redwoodshire', extra: 'THE DISTRICTS OF GRIMSBY' }
+      {
+        name: 'Redwood',
+        coords: [3500, 1500],
+        description: 'Central city and political heart of Redwoodshire.',
+        bullets: [
+          'County seat of power',
+          'Historic Old City and Exgate districts',
+          'Financial centre at Sepergord'
+        ],
+        page: 'redwood.html'
+      }
     ];
 
-    function updateInfoPanel(location) {
+    function updateInfoPanel(loc) {
       document.getElementById('info-panel').innerHTML = `
-        <h2>${location.name}</h2>
-        <p>${location.description}</p>
-        <p><strong>${location.extra}</strong></p>
+        <h2>${loc.name}</h2>
+        <p>${loc.description}</p>
+        <ul>
+          ${loc.bullets.map(b => `<li>${b}</li>`).join('')}
+        </ul>
+        <a href="${loc.page}" class="more-info-btn">
+          More information →
+        </a>
       `;
     }
 
     locations.forEach(loc => {
-      const marker = L.circleMarker(loc.coords, {
+      L.circleMarker(loc.coords, {
         radius: 7,
         color: '#ffffff',
-        weight: 2,
         fillColor: '#5F1B1B',
         fillOpacity: 0.9
-      }).addTo(map);
-
-      marker.on('click', () => {
-        map.flyTo(loc.coords, 1.2, { duration: 1.2 });
-        updateInfoPanel(loc);
-      });
+      })
+      .addTo(map)
+      .on('click', () => updateInfoPanel(loc));
     });
   </script>
 </body>
