@@ -65,32 +65,36 @@
     .leaflet-popup-tip {
       background: #5F1B1B;
     }
-  </style>
-    .back-link {
-    position: fixed;
-    top: 12px;
-    left: 12px;
-    z-index: 1000;
-    padding: 8px 12px;
-    background: #5F1B1B;
-    color: #e6f1f5;
-    text-decoration: none;
-    font-size: 0.95rem;
-    border: 1px solid rgba(230, 241, 245, 0.3);
-    border-radius: 4px;
-    transition: background 0.2s, opacity 0.2s;
-  }
 
-  .back-link:hover {
-    background: #7a2525;
-    opacity: 0.95;
-  }
+    /* Back to Redwood link */
+    .back-link {
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      z-index: 1000;
+      padding: 8px 12px;
+      background: #5F1B1B;
+      color: #e6f1f5;
+      text-decoration: none;
+      font-size: 0.95rem;
+      border: 1px solid rgba(230, 241, 245, 0.3);
+      border-radius: 4px;
+      transition: background 0.2s, opacity 0.2s;
+    }
+
+    .back-link:hover {
+      background: #7a2525;
+      opacity: 0.95;
+    }
+  </style>
 </head>
+
 <body>
   <a href="https://conto-shop.fourthwall.com/en-gbp/pages/redwood"
-   class="back-link">
-  ← Back to Redwood
+     class="back-link">
+    ← Back to Redwood
   </a>
+
   <div id="container">
     <div id="map"></div>
     <div id="info-panel">
@@ -104,7 +108,6 @@
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
   <script>
-    // --- MAP SETUP ---
     const map = L.map('map', {
       crs: L.CRS.Simple,
       minZoom: -2,
@@ -112,49 +115,31 @@
       zoomControl: true
     });
 
-    const imageWidth = 5614;  // adjust if needed
-    const imageHeight = 7122; // adjust if needed
+    const imageWidth = 5614;
+    const imageHeight = 7122;
     const imageBounds = [[0, 0], [imageHeight, imageWidth]];
 
-    // Use your Imageshack direct link
     const imageURL = 'https://imagizer.imageshack.com/img923/4131/ufv3V4.png';
-    const image = L.imageOverlay(imageURL, imageBounds).addTo(map);
+    L.imageOverlay(imageURL, imageBounds).addTo(map);
 
     map.fitBounds(imageBounds);
 
-    // --- CITY / TOWN DATA ---
     const locations = [
-      { name: 'Redwood', coords: [3500, 1500], description: 'Centeral City in Redwoodshire', extra: 'THE DISTRICTS OF REDWOOD', extra2: 'EXGATE — THE CITY’S HEARTBEAT', extra3: 'Exgate is Redwood’s central district: lively, historic, and distinctly middle-class. It grew from a market town absorbed into the city centuries ago, and it still carries that identity — tightly packed Georgian shopfronts, narrow streets, and a busy mix of cafés, trades, and small businesses.', extra4: 'Brick & Basil, the family-run pizza shop around which the series revolves, sits here among the crooked roofs and stone façades. Exgate represents the everyday Redwood resident: hardworking, community-minded, proud of its history but practical about its future.', extra5: 'Running through Exgate is one of Redwood’s defining features — a grand medieval bridge that rises right out of the shops and carries the city’s foot traffic into the Old Town. From below, the bridge cuts through buildings the way centuries of development tend to do: imperfectly but beautifully.', extra6: 'THE CITY OF REDWOOD — THE OLD TOWN', extra7: 'Across the bridge lies the Old City: Redwood’s medieval and Tudor core. This is the postcard-perfect side of the city — timber-framed houses leaning slightly over cobbles, hidden courtyards, crooked alleys, and stone churches with bells that carry across the rooftops', extra8: 'Across the bridge lies the Old City: Redwood’s medieval and Tudor core. This is the postcard-perfect side of the city — timber-framed houses leaning slightly over cobbles, hidden courtyards, crooked alleys, and stone churches with bells that carry across the rooftops.', extra9: 'Old City is busiest in winter, when the castle, cathedral, and winding streets host Christmas events that draw crowds from across the country. Prices rise, lights glow, and the whole district feels enchanted, but never in a way that loses its authenticity. It is heritage that still breathes.', extra10: 'SEPERGORD — THE VICTORIAN FINANCIAL DISTRICT', extra11: 'Sepergord is Redwood’s power centre: imposing Victorian bank buildings, red-brick counting houses, carved stone façades, and offices arranged around orderly squares. Unlike other cities, Redwood rejected glass skyscrapers — its financial influence is expressed through preserved heritage, not modern height.', extra12: 'These buildings reflect the power structures that have shaped Redwood for generations. This is where the city’s most established firms operate, where polished accents blend with northern roots, and where money and reputation quietly change hands.', extra13: 'Sepergord represents the old guard — polished, influential, and deeply tied into Redwood’s identity.', extra14: 'DOCKS & RIVERSIDE', extra15: 'To the east, old warehouses and ironwork cranes trace Redwood’s industrial past. The docks are a mix of derelict structures, renovated markets, and developing riverside venues. They hint at the city’s working history and the ongoing tension between preservation and renewal.' },
+      { name: 'Redwood', coords: [3500, 1500], description: 'Centeral City in Redwoodshire', extra: 'THE DISTRICTS OF REDWOOD' },
       { name: 'York', coords: [4550, 1000], description: 'Historic City in Redwoodshire.', extra: 'THE DISTRICTS OF YORK' },
       { name: 'Oaklands', coords: [4750, 2560], description: 'Sizable Town in Redwoodshire.', extra: 'THE DISTRICTS OF OAKLANDS' },
       { name: 'Hull', coords: [3900, 3300], description: 'Large Industrial Port City in Redwoodshire', extra: 'THE DISTRICTS OF HULL' },
       { name: 'Grimsby', coords: [3000, 4100], description: 'Former Fishing Town in Redwoodshire', extra: 'THE DISTRICTS OF GRIMSBY' }
     ];
 
-    // --- INFO PANEL UPDATE ---
     function updateInfoPanel(location) {
       document.getElementById('info-panel').innerHTML = `
         <h2>${location.name}</h2>
         <p>${location.description}</p>
         <p><strong>${location.extra}</strong></p>
-        <p><strong>${location.extra2}</strong></p>
-        <p><strong>${location.extra3}</strong></p>
-        <p><strong>${location.extra4}</strong></p>
-        <p><strong>${location.extra5}</strong></p>
-        <p><strong>${location.extra6}</strong></p>
-        <p><strong>${location.extra7}</strong></p>
-        <p><strong>${location.extra8}</strong></p>
-        <p><strong>${location.extra9}</strong></p>
-        <p><strong>${location.extra10}</strong></p>
-        <p><strong>${location.extra11}</strong></p>
-        <p><strong>${location.extra12}</strong></p>
-        <p><strong>${location.extra13}</strong></p>
-        <p><strong>${location.extra14}</strong></p>
-        <p><strong>${location.extra15}</strong></p>
       `;
     }
 
-    // --- ADD MARKERS ---
     locations.forEach(loc => {
       const marker = L.circleMarker(loc.coords, {
         radius: 7,
