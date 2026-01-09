@@ -1,1 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>York — City Overview</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      padding: 24px;
+      font-family: 'EB Garamond';
+      background: #5F1B1B;
+      color: #e6f1f5;
+      max-width: 900px;
+    }
+
+    .back-to-map {
+      display: inline-block;
+      margin-bottom: 24px;
+      color: #e6f1f5;
+      text-decoration: none;
+      opacity: 0.8;
+    }
+
+    .back-to-map:hover {
+      opacity: 1;
+      text-decoration: underline;
+    }
+
+    /* Layout */
+    .content {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+    }
+
+    .text {
+      flex: 1;
+    }
+
+    .image {
+      flex: 0 0 4000px;
+    }
+
+    .image img {
+      width: 100%;
+      height: 4000;
+      display: block;
+      pointer-events: none; /* prevents zoom / interaction */
+      user-select: none;
+    }
+
+    /* Mobile fallback */
+    @media (max-width: 4000px) {
+      .content {
+        flex-direction: column;
+      }
+
+      .image {
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <a href="index.html" class="back-to-map">
+    ← Back to Redwoodshire Map
+  </a>
+
+  <div class="content">
+    <div class="text">
+      <h1>York</h1>
+
+      <p>
+        Placeholder.
+      </p>
+
+      <p>
+        Placeholder.
+
+      </p>
+    </div>
+
+    <div class="image">
+      <img src="https://imagizer.imageshack.com/img922/7084/oPDMyC.png" alt="York cityscape">
+    </div>
+  </div>
+
+</body>
+</html>
 
