@@ -1,0 +1,75 @@
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@1,300&display=swap" rel="stylesheet">
+
+<style>
+.pp-section{padding:24px 16px;max-width:900px;margin:0 auto;box-sizing:border-box}
+.pp-wall{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
+.pp-loading{font-family:'Crimson Pro',serif;font-style:italic;font-size:13px;letter-spacing:.18em;color:rgba(155,61,232,.4);text-align:center;padding:40px 0}
+.pp-error{font-family:'Crimson Pro',serif;font-style:italic;font-size:13px;color:rgba(200,60,60,.5);text-align:center;padding:40px 0}
+.pp{cursor:default}
+.pp__inner{position:relative;border-radius:3px;overflow:hidden;transition:transform .3s ease,box-shadow .3s ease;display:flex;flex-direction:column;align-items:center;background:linear-gradient(145deg,#1e1030,#2a1645,#1a0d2e,#120820);border:1px solid rgba(120,60,220,.22);box-shadow:0 3px 14px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.04)}
+.pp:hover .pp__inner{transform:translateY(-2px);box-shadow:0 7px 24px rgba(0,0,0,.6),0 0 20px rgba(95,0,162,.1)}
+.pp__fo{position:absolute;inset:4px;border:1px solid rgba(120,60,220,.13);border-radius:2px;pointer-events:none;z-index:5}
+.pp__fi{position:absolute;inset:8px;border:1px solid rgba(160,100,20,.08);border-radius:1px;pointer-events:none;z-index:5}
+.pp__screw{position:absolute;width:6px;height:6px;border-radius:50%;z-index:10;background:radial-gradient(circle at 35% 35%,#b090d0,#6040a0 55%,#2a1460);box-shadow:0 1px 2px rgba(0,0,0,.7)}
+.pp__screw::after{content:'';position:absolute;top:50%;left:10%;width:80%;height:1px;background:rgba(0,0,0,.55);transform:translateY(-50%)}
+.pp__screw--tl{top:5px;left:5px}.pp__screw--tr{top:5px;right:5px}
+.pp__screw--bl{bottom:5px;left:5px}.pp__screw--br{bottom:5px;right:5px}
+.pp__gem{position:absolute;width:4px;height:4px;transform:rotate(45deg);background:rgba(160,100,20,.4);z-index:6}
+.pp__gem--tl{top:13px;left:13px}.pp__gem--tr{top:13px;right:13px}
+.pp__gem--bl{bottom:13px;left:13px}.pp__gem--br{bottom:13px;right:13px}
+.pp__bar{width:55%;height:1px;background:linear-gradient(to right,transparent,rgba(160,100,20,.5),rgba(120,60,220,.35),transparent);margin:0 auto}
+.pp__body{position:relative;z-index:4;width:100%;display:flex;flex-direction:column;align-items:center;text-align:center;padding:9px 11px 11px;gap:3px}
+.pp__name{font-family:'Cinzel',serif;font-weight:600;font-size:11px;letter-spacing:.08em;text-transform:uppercase;line-height:1.2;color:#ddb8f5;text-shadow:0 0 8px rgba(155,61,232,.25),0 1px 0 rgba(0,0,0,.8)}
+.pp__dots{font-size:6px;letter-spacing:.35em;color:rgba(155,61,232,.22);line-height:1}
+.pp__date{font-family:'Cinzel',serif;font-size:7px;letter-spacing:.18em;text-transform:uppercase;color:rgba(140,60,230,.32)}
+.pp__sheen{position:absolute;inset:0;z-index:8;background:linear-gradient(110deg,transparent 35%,rgba(255,255,255,.025) 50%,transparent 65%);opacity:0;transition:opacity .3s;pointer-events:none}
+.pp:hover .pp__sheen{opacity:1}
+</style>
+
+<div class="pp-section">
+  <div class="pp-wall" id="patron-wall">
+    <div class="pp-loading">Loading patrons…</div>
+  </div>
+</div>
+
+<script>
+const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+function formatDate(iso) {
+  if (!iso || iso === "0000-00") return "Charter Member";
+  const [year, month] = iso.split("-");
+  return MONTHS[parseInt(month, 10) - 1] + " " + year;
+}
+
+function buildPlaque(p) {
+  return `<div class="pp">
+    <div class="pp__inner">
+      <div class="pp__screw pp__screw--tl"></div><div class="pp__screw pp__screw--tr"></div>
+      <div class="pp__screw pp__screw--bl"></div><div class="pp__screw pp__screw--br"></div>
+      <div class="pp__gem pp__gem--tl"></div><div class="pp__gem pp__gem--tr"></div>
+      <div class="pp__gem pp__gem--bl"></div><div class="pp__gem pp__gem--br"></div>
+      <div class="pp__fo"></div><div class="pp__fi"></div>
+      <div class="pp__body">
+        <div class="pp__bar"></div>
+        <span class="pp__name">${p.name}</span>
+        <span class="pp__dots">· · ·</span>
+        <span class="pp__date">Since ${formatDate(p.pledgeDate)}</span>
+      </div>
+      <div class="pp__sheen"></div>
+    </div>
+  </div>`;
+}
+
+(async function render() {
+  const wall = document.getElementById("patron-wall");
+  try {
+    const res = await fetch("/patrons.json");
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const { patrons } = await res.json();
+    if (!patrons?.length) throw new Error("Empty patron list");
+    wall.innerHTML = patrons.map(buildPlaque).join("");
+  } catch (err) {
+    wall.innerHTML = `<div class="pp-error">Could not load patron list (${err.message})</div>`;
+  }
+})();
+</script>

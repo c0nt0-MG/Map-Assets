@@ -1,0 +1,40 @@
+name: Fetch Patreon Patrons
+
+on:
+  schedule:
+    - cron: "0 3 * * *"   # runs every night at 3am UTC
+  workflow_dispatch:        # also lets you trigger it manually from GitHub
+
+jobs:
+  fetch-patrons:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write       # needed to commit patrons.json back to the repo
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm install node-fetch
+
+      - name: Run patron fetcher
+        env:
+          PATREON_TOKEN_REDWOOD:     ${{ secrets.PATREON_TOKEN_REDWOOD }}
+          PATREON_TOKEN_WILLOW:      ${{ secrets.PATREON_TOKEN_WILLOW }}
+          PATREON_TOKEN_TWELVEFOLD:  ${{ secrets.PATREON_TOKEN_TWELVEFOLD }}
+        run: node scripts/fetch-patrons.js
+
+      - name: Commit updated patrons.json
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add public/patrons.json
+          git diff --cached --quiet || git commit -m "chore: update patron list [skip ci]"
+          git push
